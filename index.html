@@ -7,20 +7,22 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Kütüphanem</title>
     <style>
-        /* --- TEMEL STİLLER & ARKA PLAN --- */
+        /* --- TEMEL STİLLER --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            /* Arka plan görseli */
             background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1080&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-size: cover; background-position: center; background-attachment: fixed;
             margin: 0; padding: 0;
             -webkit-tap-highlight-color: transparent;
-            padding-bottom: 100px; /* Alt boşluk artırıldı */
+            padding-bottom: 100px;
         }
 
-        /* HEADER (Buzlu Cam) */
+        /* NUMARA OKLARINI GİZLEME (Temiz Görünüm İçin) */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* HEADER */
         .header {
             background-color: rgba(255, 255, 255, 0.80);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -36,47 +38,36 @@
         .dashboard {
             display: flex; justify-content: space-between; background: rgba(255,255,255,0.90);
             margin: 20px 20px 0 20px; padding: 15px; border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.5);
         }
         .dash-item { text-align: center; flex: 1; }
         .dash-val { display: block; font-size: 22px; font-weight: 700; color: #007aff; letter-spacing: -1px; }
         .dash-lbl { display: block; font-size: 11px; color: #8e8e93; font-weight: 600; text-transform: uppercase; margin-top: 2px;}
         .dash-sep { width: 1px; background: #e5e5ea; margin: 0 10px; }
 
-        /* KONTROLLER (DÜZELTİLDİ: Altına Boşluk Eklendi) */
+        /* KONTROLLER */
         .controls { 
-            padding: 0 20px; 
-            margin-top: 20px; 
-            margin-bottom: 25px; /* <--- İSTEĞİNİZ: LİSTE İLE ARAYI AÇTIK */
-            display: flex; 
-            gap: 12px; 
-            align-items: center; 
+            padding: 0 20px; margin-top: 20px; margin-bottom: 25px; 
+            display: flex; gap: 12px; align-items: center; 
         }
         .search-box, .filter-select {
             height: 50px; padding: 0 15px; border: 1px solid rgba(0,0,0,0.1);
             border-radius: 12px; font-size: 15px; box-sizing: border-box; outline: none;
             margin-bottom: 0 !important; background-color: rgba(255,255,255,0.95); color: #1c1c1e;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            transition: all 0.2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: all 0.2s;
         }
         .search-box:focus, .filter-select:focus { border-color: #007aff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
         .search-box { flex: 2; }
         .filter-select { flex: 1; -webkit-appearance: none; }
 
-        /* LİSTE & KARTLAR (YENİ: Tıklama Efekti) */
+        /* LİSTE */
         .container { padding: 0 20px; max-width: 600px; margin: 0 auto; }
         .book-item {
             background-color: rgba(255,255,255,0.95); padding: 16px; border-radius: 16px; margin-bottom: 12px;
-            display: flex; align-items: center; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
-            cursor: pointer;
-            transition: transform 0.1s ease, background-color 0.2s; /* Animasyon */
-            border: 1px solid rgba(255,255,255,0.6);
+            display: flex; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s; border: 1px solid rgba(255,255,255,0.6);
         }
-        /* Dokunma Hissi */
         .book-item:active { transform: scale(0.98); background-color: #f2f2f7; }
-        
         .book-icon { font-size: 26px; background-color: #f2f2f7; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-right: 16px; }
         .book-info { flex: 1; overflow: hidden; }
         .book-title { font-size: 16px; font-weight: 600; color: #1c1c1e; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.3px; }
@@ -87,8 +78,7 @@
         .author-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding-top: 20px;}
         .author-tile {
             background-color: rgba(255,255,255,0.95); padding: 25px 15px; border-radius: 20px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; 
-            transition: transform 0.1s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.1s;
             border: 1px solid rgba(255,255,255,0.6);
         }
         .author-tile:active { transform: scale(0.96); background-color: #f9f9f9; }
@@ -105,33 +95,28 @@
         .btn-magic:active { background-color: #e08300; }
         
         .btn-random { 
-            background: linear-gradient(135deg, #5856d6, #7a78e0); 
-            color: white; border: none; padding: 12px 24px; border-radius: 30px; 
+            background: linear-gradient(135deg, #5856d6, #7a78e0); color: white; border: none; padding: 12px 24px; border-radius: 30px; 
             font-size: 14px; font-weight: 600; margin: 20px auto 0 auto; display: block; cursor: pointer; 
-            box-shadow: 0 4px 15px rgba(88, 86, 214, 0.4); 
-            transition: transform 0.1s;
+            box-shadow: 0 4px 15px rgba(88, 86, 214, 0.4); transition: transform 0.1s;
         }
         .btn-random:active { transform: scale(0.95); }
-
         .btn-delete { background-color: #fff; color: #ff3b30; border: 2px solid #ff3b30; padding: 14px; border-radius: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s; }
         .btn-delete:active { background-color: #ffe5e5; }
 
-        /* FORM INPUTLAR */
+        /* INPUTLAR */
         .container input[type="text"], .container input[type="number"] { 
             width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #e5e5ea; 
-            border-radius: 14px; font-size: 16px; background-color: white; box-sizing: border-box; 
+            border-radius: 14px; font-size: 16px; background-color: rgba(255,255,255,0.9); box-sizing: border-box; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
         .isbn-row { display: flex; }
         .isbn-input { border-radius: 14px 0 0 14px !important; margin-bottom: 20px !important; }
 
-        /* TAB BAR (Buzlu Cam) */
+        /* TAB BAR */
         .tab-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(0,0,0,0.1);
-            display: flex; justify-content: space-around;
+            background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0,0,0,0.1); display: flex; justify-content: space-around;
             padding-bottom: env(safe-area-inset-bottom); z-index: 100;
         }
         .tab-btn { background: none; border: none; padding: 12px; flex: 1; text-align: center; color: #aeaeb2; cursor: pointer; transition: color 0.2s; }
@@ -165,7 +150,6 @@
         .info-label { font-size: 11px; color: #8e8e93; display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
         .info-value { font-size: 18px; font-weight: 800; color: #1c1c1e; }
         .desc { font-size: 16px; line-height: 1.6; color: #3a3a3c; text-align: justify; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        
         .hidden { display: none !important; }
         .loading { text-align: center; color: #8e8e93; padding: 30px; font-size: 14px; font-weight: 500; }
     </style>
@@ -183,14 +167,12 @@
             <div class="dash-item"><span class="dash-val" id="stat-authors">-</span><span class="dash-lbl">Yazar</span></div>
         </div>
         <button class="btn-random" onclick="pickRandomBook()">🎲 Ne Okusam?</button>
-        
         <div class="controls">
             <input type="text" id="search-input" class="search-box" placeholder="Kitap ara..." onkeyup="applyFilters()">
             <select id="author-filter" class="filter-select" onchange="applyFilters()">
                 <option value="">Tüm Yazarlar</option>
             </select>
         </div>
-        
         <div class="container" style="padding-top: 0;">
             <div id="loading-spinner" class="loading hidden">Veriler güncelleniyor...</div>
             <div id="book-list"></div>
@@ -206,7 +188,9 @@
         <div style="font-size: 60px; margin-bottom: 25px; background:white; width:110px; height:110px; line-height:110px; border-radius:50%; margin:0 auto 25px auto; box-shadow:0 10px 30px rgba(0,0,0,0.1);">🔐</div>
         <h2 style="margin-bottom: 10px; color:#1c1c1e;">Yönetici Girişi</h2>
         <p style="color:#8e8e93; margin-bottom: 30px;">Kitap eklemek veya silmek için şifre girin.</p>
-        <input type="number" id="pin-input" placeholder="Şifre" style="text-align: center; font-size: 24px; letter-spacing: 5px;">
+        
+        <input type="number" id="pin-input" placeholder="Şifre" inputmode="numeric" style="text-align: center; font-size: 24px; letter-spacing: 5px;">
+        
         <button class="btn" onclick="checkLogin()">Giriş Yap</button>
     </div>
 
@@ -217,7 +201,9 @@
         </div>
         <label style="font-size:13px; color:#8e8e93; font-weight:600; margin-bottom:8px; display:block;">OTOMATİK DOLDUR</label>
         <div class="isbn-row">
-            <input type="number" id="isbn-input" class="isbn-input" placeholder="Barkod No (ISBN)">
+            
+            <input type="number" id="isbn-input" class="isbn-input" placeholder="Barkod No (ISBN)" inputmode="numeric">
+            
             <button class="btn-magic" onclick="fetchByISBN()">🪄</button>
         </div>
         
@@ -311,7 +297,6 @@
         }
 
         function refreshUI() { updateStats(); updateAuthorFilter(); applyFilters(); renderAuthorsPage(); }
-
         function showSuccessPopup() {
             const popup = document.getElementById('success-popup');
             popup.classList.add('active');
@@ -323,18 +308,7 @@
         function updateStats() { document.getElementById('stat-total').innerText = allBooks.length; const authors = new Set(allBooks.map(b => b.yazar)); document.getElementById('stat-authors').innerText = authors.size; }
         function updateAuthorFilter() { const select = document.getElementById('author-filter'); while (select.options.length > 1) { select.remove(1); } const authors = [...new Set(allBooks.map(b => b.yazar))].sort(); authors.forEach(auth => { if(auth) { const opt = document.createElement('option'); opt.value = auth; opt.innerText = auth; select.appendChild(opt); } }); }
         function applyFilters() { const query = document.getElementById('search-input').value.toLowerCase(); const authorFilter = document.getElementById('author-filter').value; const filtered = allBooks.filter(book => { return (book.ad.toLowerCase().includes(query) || book.yazar.toLowerCase().includes(query)) && (authorFilter === "" || book.yazar === authorFilter); }); renderBooks(filtered); }
-        
-        function renderBooks(books) { 
-            const list = document.getElementById('book-list'); const emptyMsg = document.getElementById('empty-msg'); list.innerHTML = ''; 
-            if (books.length === 0) { emptyMsg.classList.remove('hidden'); return; } 
-            emptyMsg.classList.add('hidden'); 
-            books.forEach(book => { 
-                const item = document.createElement('div'); item.className = 'book-item'; item.onclick = () => showBookDetail(book); 
-                item.innerHTML = `<div class="book-icon">📖</div><div class="book-info"><span class="book-title">${book.ad}</span><span class="book-author">${book.yazar}</span></div><span class="arrow">›</span>`; 
-                list.appendChild(item); 
-            }); 
-        }
-        
+        function renderBooks(books) { const list = document.getElementById('book-list'); const emptyMsg = document.getElementById('empty-msg'); list.innerHTML = ''; if (books.length === 0) { emptyMsg.classList.remove('hidden'); return; } emptyMsg.classList.add('hidden'); books.forEach(book => { const item = document.createElement('div'); item.className = 'book-item'; item.onclick = () => showBookDetail(book); item.innerHTML = `<div class="book-icon">📖</div><div class="book-info"><span class="book-title">${book.ad}</span><span class="book-author">${book.yazar}</span></div><span class="arrow">›</span>`; list.appendChild(item); }); }
         function pickRandomBook() { if (allBooks.length === 0) return; const book = allBooks[Math.floor(Math.random() * allBooks.length)]; alert("🎲 Bugün Şunu Oku:\n\n" + book.ad + "\n" + book.yazar); }
         function showBookDetail(book) { currentDetailBook = book; const body = document.getElementById('detail-modal-body'); body.innerHTML = '<div class="loading">Yükleniyor...</div>'; toggleModal('detail-modal', true); const query = `intitle:${book.ad}+inauthor:${book.yazar}`; fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`).then(res => res.json()).then(data => { let img='', pageCount='-', year='-', desc='Özet bilgisi bulunamadı.'; if (data.items?.length > 0) { const info = data.items[0].volumeInfo; if (info.imageLinks?.thumbnail) img = info.imageLinks.thumbnail.replace('http:', 'https:'); pageCount = info.pageCount || '-'; year = info.publishedDate?.substring(0,4) || '-'; desc = info.description || desc; } let deleteBtn = ''; if (isLoggedIn) { deleteBtn = `<button class="btn-delete" onclick="deleteBook()">🗑️ Bu Kitabı Sil</button>`; } body.innerHTML = `${img ? `<img src="${img}" class="detail-cover">` : '<div class="detail-cover" style="display:flex;align-items:center;justify-content:center;font-size:40px;">📚</div>'}<div class="detail-title">${book.ad}</div><span class="detail-author">${book.yazar}</span><div class="info-row"><div class="info-box"><span class="info-label">Sayfa</span><span class="info-value">${pageCount}</span></div><div class="info-box"><span class="info-label">Yıl</span><span class="info-value">${year}</span></div></div><h4>Özet</h4><div class="desc">${desc}</div>${deleteBtn}`; }).catch(() => body.innerHTML = '<p>Detay yok.</p>'); }
         function toggleModal(id, show) { document.getElementById(id).style.display = show ? 'flex' : 'none'; }
@@ -351,8 +325,7 @@
                 if(data.status === "Silindi") {
                     allBooks = allBooks.filter(b => b.ad !== currentDetailBook.ad || b.yazar !== currentDetailBook.yazar);
                     localStorage.setItem('kutuphanem_data', JSON.stringify(allBooks));
-                    refreshUI();
-                    toggleModal('detail-modal', false); toggleModal('author-modal', false);
+                    refreshUI(); toggleModal('detail-modal', false); toggleModal('author-modal', false);
                     alert("Kitap silindi.");
                 } else { alert("Silinemedi."); }
             }).catch(() => alert("Hata.")).finally(() => { if(btn) { btn.innerText = '🗑️ Sil'; btn.disabled = false; } });
