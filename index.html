@@ -10,125 +10,164 @@
         /* --- TEMEL STİLLER & ARKA PLAN --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            /* Kütüphane Arka Plan Görseli ve Üzerine Beyaz Perde */
+            /* Arka plan görseli */
             background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1080&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             margin: 0; padding: 0;
             -webkit-tap-highlight-color: transparent;
-            padding-bottom: 90px;
+            padding-bottom: 100px; /* Alt boşluk artırıldı */
         }
 
-        /* HEADER (Buzlu Cam Efektli) */
+        /* HEADER (Buzlu Cam) */
         .header {
-            background-color: rgba(255, 255, 255, 0.85); /* Yarı şeffaf */
-            backdrop-filter: blur(10px); /* Buzlu cam */
-            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.80);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             padding: 15px; text-align: center;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
             position: sticky; top: 0; z-index: 100;
             padding-top: env(safe-area-inset-top);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
-        .header h1 { margin: 0; font-size: 18px; font-weight: 600; }
+        .header h1 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.5px; color: #1c1c1e; }
 
         /* DASHBOARD */
         .dashboard {
-            display: flex; justify-content: space-between; background: rgba(255,255,255,0.95);
-            margin: 15px 20px 0 20px; padding: 15px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; background: rgba(255,255,255,0.90);
+            margin: 20px 20px 0 20px; padding: 15px; border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.5);
         }
         .dash-item { text-align: center; flex: 1; }
-        .dash-val { display: block; font-size: 20px; font-weight: bold; color: #007aff; }
-        .dash-lbl { display: block; font-size: 11px; color: #8e8e93; text-transform: uppercase; }
+        .dash-val { display: block; font-size: 22px; font-weight: 700; color: #007aff; letter-spacing: -1px; }
+        .dash-lbl { display: block; font-size: 11px; color: #8e8e93; font-weight: 600; text-transform: uppercase; margin-top: 2px;}
         .dash-sep { width: 1px; background: #e5e5ea; margin: 0 10px; }
 
-        /* KONTROLLER */
-        .controls { padding: 0 20px; margin-top: 15px; display: flex; gap: 10px; align-items: center; }
-        .search-box, .filter-select {
-            height: 48px; padding: 0 12px; border: 1px solid #d1d1d6;
-            border-radius: 10px; font-size: 15px; box-sizing: border-box; outline: none;
-            margin-bottom: 0 !important; background-color: rgba(255,255,255,0.9); color: #333;
+        /* KONTROLLER (DÜZELTİLDİ: Altına Boşluk Eklendi) */
+        .controls { 
+            padding: 0 20px; 
+            margin-top: 20px; 
+            margin-bottom: 25px; /* <--- İSTEĞİNİZ: LİSTE İLE ARAYI AÇTIK */
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
         }
+        .search-box, .filter-select {
+            height: 50px; padding: 0 15px; border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 12px; font-size: 15px; box-sizing: border-box; outline: none;
+            margin-bottom: 0 !important; background-color: rgba(255,255,255,0.95); color: #1c1c1e;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            transition: all 0.2s;
+        }
+        .search-box:focus, .filter-select:focus { border-color: #007aff; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
         .search-box { flex: 2; }
         .filter-select { flex: 1; -webkit-appearance: none; }
 
-        /* LİSTE & KARTLAR */
-        .container { padding: 20px; max-width: 600px; margin: 0 auto; }
+        /* LİSTE & KARTLAR (YENİ: Tıklama Efekti) */
+        .container { padding: 0 20px; max-width: 600px; margin: 0 auto; }
         .book-item {
-            background-color: rgba(255,255,255,0.95); padding: 15px; border-radius: 12px; margin-bottom: 10px;
-            display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer;
+            background-color: rgba(255,255,255,0.95); padding: 16px; border-radius: 16px; margin-bottom: 12px;
+            display: flex; align-items: center; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); 
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s; /* Animasyon */
+            border: 1px solid rgba(255,255,255,0.6);
         }
-        .book-item:active { background-color: #e5e5ea; }
-        .book-icon { font-size: 24px; background-color: #f2f2f7; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 8px; margin-right: 15px; }
+        /* Dokunma Hissi */
+        .book-item:active { transform: scale(0.98); background-color: #f2f2f7; }
+        
+        .book-icon { font-size: 26px; background-color: #f2f2f7; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-right: 16px; }
         .book-info { flex: 1; overflow: hidden; }
-        .book-title { font-size: 16px; font-weight: 600; color: #000; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .book-author { font-size: 14px; color: #8e8e93; margin-top: 3px; display: block; }
-        .arrow { color: #c7c7cc; font-size: 20px; }
+        .book-title { font-size: 16px; font-weight: 600; color: #1c1c1e; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.3px; }
+        .book-author { font-size: 14px; color: #8e8e93; margin-top: 4px; display: block; font-weight: 500; }
+        .arrow { color: #d1d1d6; font-size: 20px; font-weight: bold; }
 
         /* YAZAR GRID */
-        .author-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .author-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding-top: 20px;}
         .author-tile {
-            background-color: rgba(255,255,255,0.95); padding: 20px 10px; border-radius: 15px; text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.1s;
+            background-color: rgba(255,255,255,0.95); padding: 25px 15px; border-radius: 20px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; 
+            transition: transform 0.1s;
+            border: 1px solid rgba(255,255,255,0.6);
         }
-        .author-tile:active { transform: scale(0.98); background-color: #f9f9f9; }
-        .tile-icon { font-size: 30px; margin-bottom: 10px; display: block; }
-        .tile-name { font-size: 16px; font-weight: 600; color: #333; display: block; margin-bottom: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
-        .tile-count { font-size: 12px; color: white; background-color: #5856d6; padding: 4px 10px; border-radius: 12px; font-weight: bold; }
+        .author-tile:active { transform: scale(0.96); background-color: #f9f9f9; }
+        .tile-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+        .tile-name { font-size: 16px; font-weight: 600; color: #333; display: block; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+        .tile-count { font-size: 11px; color: white; background-color: #5856d6; padding: 5px 12px; border-radius: 20px; font-weight: 700; letter-spacing: 0.5px; }
 
-        /* BUTONLAR & INPUTLAR */
-        .btn { background-color: #007aff; color: white; border: none; padding: 14px; border-radius: 10px; width: 100%; font-size: 17px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-        .btn:active { background-color: #005bb5; }
-        .btn:disabled { background-color: #b4d5fe; }
-        .btn-magic { background-color: #ff9500; width: auto; border-radius: 0 10px 10px 0; padding: 0 20px; font-size: 24px; border: 1px solid #d1d1d6; border-left: none; }
-        .btn-random { background-color: #5856d6; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; margin: 10px auto; display: block; cursor: pointer; box-shadow: 0 4px 10px rgba(88, 86, 214, 0.3); }
-        .btn-delete { background-color: #fff; color: #ff3b30; border: 2px solid #ff3b30; padding: 12px; border-radius: 10px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; display: flex; align-items: center; justify-content: center; }
+        /* BUTONLAR */
+        .btn { background-color: #007aff; color: white; border: none; padding: 16px; border-radius: 14px; width: 100%; font-size: 17px; font-weight: 600; cursor: pointer; transition: transform 0.1s, background-color 0.2s; box-shadow: 0 4px 12px rgba(0,122,255,0.3); }
+        .btn:active { transform: scale(0.98); background-color: #0062cc; }
+        .btn:disabled { background-color: #b4d5fe; transform: none; box-shadow: none; }
         
-        .container input[type="text"], .container input[type="number"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #d1d1d6; border-radius: 10px; font-size: 16px; background-color: rgba(255,255,255,0.9); box-sizing: border-box; }
-        .isbn-row { display: flex; }
-        .isbn-input { border-radius: 10px 0 0 10px !important; margin-bottom: 15px; }
+        .btn-magic { background-color: #ff9500; width: auto; border-radius: 0 14px 14px 0; padding: 0 24px; font-size: 24px; border: none; box-shadow: none; }
+        .btn-magic:active { background-color: #e08300; }
+        
+        .btn-random { 
+            background: linear-gradient(135deg, #5856d6, #7a78e0); 
+            color: white; border: none; padding: 12px 24px; border-radius: 30px; 
+            font-size: 14px; font-weight: 600; margin: 20px auto 0 auto; display: block; cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(88, 86, 214, 0.4); 
+            transition: transform 0.1s;
+        }
+        .btn-random:active { transform: scale(0.95); }
 
-        /* TAB BAR (Buzlu Cam Efektli) */
+        .btn-delete { background-color: #fff; color: #ff3b30; border: 2px solid #ff3b30; padding: 14px; border-radius: 14px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s; }
+        .btn-delete:active { background-color: #ffe5e5; }
+
+        /* FORM INPUTLAR */
+        .container input[type="text"], .container input[type="number"] { 
+            width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #e5e5ea; 
+            border-radius: 14px; font-size: 16px; background-color: white; box-sizing: border-box; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        .isbn-row { display: flex; }
+        .isbn-input { border-radius: 14px 0 0 14px !important; margin-bottom: 20px !important; }
+
+        /* TAB BAR (Buzlu Cam) */
         .tab-bar {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(0,0,0,0.1);
             display: flex; justify-content: space-around;
             padding-bottom: env(safe-area-inset-bottom); z-index: 100;
         }
-        .tab-btn { background: none; border: none; padding: 10px; flex: 1; text-align: center; color: #8e8e93; cursor: pointer; }
+        .tab-btn { background: none; border: none; padding: 12px; flex: 1; text-align: center; color: #aeaeb2; cursor: pointer; transition: color 0.2s; }
         .tab-btn.active { color: #007aff; }
-        .tab-icon { font-size: 24px; display: block; margin-bottom: 2px; }
-        .tab-text { font-size: 10px; font-weight: 500; }
+        .tab-icon { font-size: 26px; display: block; margin-bottom: 4px; transition: transform 0.2s; }
+        .tab-btn.active .tab-icon { transform: translateY(-2px); }
+        .tab-text { font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
 
-        /* MODAL */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: flex-end; }
-        .modal-content { background-color: white; width: 100%; max-width: 600px; height: 90%; border-radius: 15px 15px 0 0; padding: 20px; box-sizing: border-box; overflow-y: auto; position: relative; animation: slideUp 0.3s ease-out; margin: 0 auto; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .close-btn { position: absolute; top: 15px; right: 15px; color: #007aff; font-weight: bold; background: none; border: none; font-size: 16px; cursor: pointer; z-index: 10; }
-
-        /* YENİ: BAŞARILI KAYIT POPUP'I */
+        /* POPUP & MODAL */
         .success-popup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
-            background: white; padding: 30px; border-radius: 20px; text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 300; opacity: 0; pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: rgba(255,255,255,0.98); padding: 30px; border-radius: 24px; text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2); z-index: 300; opacity: 0; pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px); width: 80%; max-width: 300px;
         }
         .success-popup.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: all;}
-        .success-icon { font-size: 50px; margin-bottom: 10px; display: block; animation: bounce 0.5s; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .success-icon { font-size: 60px; margin-bottom: 15px; display: block; }
+        
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 200; justify-content: center; align-items: flex-end; }
+        .modal-content { background-color: #fbfbfd; width: 100%; max-width: 600px; height: 92%; border-radius: 24px 24px 0 0; padding: 25px; box-sizing: border-box; overflow-y: auto; position: relative; animation: slideUp 0.3s ease-out; margin: 0 auto; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .close-btn { position: absolute; top: 20px; right: 20px; color: #007aff; font-weight: 700; background: #e5f1ff; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; cursor: pointer; z-index: 10; }
 
         /* DETAY */
-        .detail-cover { width: 120px; height: 180px; background-color: #ddd; border-radius: 8px; margin: 20px auto; display: block; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .detail-title { font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 5px; }
-        .detail-author { font-size: 18px; color: #666; text-align: center; margin-bottom: 20px; display: block; }
-        .info-row { display: flex; justify-content: center; margin-bottom: 20px; }
-        .info-box { background-color: #f2f2f7; padding: 10px 20px; border-radius: 10px; margin: 0 5px; text-align: center; }
-        .desc { font-size: 16px; line-height: 1.5; color: #333; text-align: justify; }
+        .detail-cover { width: 140px; height: 210px; background-color: #ddd; border-radius: 12px; margin: 30px auto; display: block; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.25); transform: rotate(-2deg); border: 4px solid white; }
+        .detail-title { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 5px; color: #1c1c1e; letter-spacing: -0.5px; }
+        .detail-author { font-size: 18px; color: #8e8e93; text-align: center; margin-bottom: 30px; display: block; font-weight: 500; }
+        .info-row { display: flex; justify-content: center; margin-bottom: 30px; gap: 15px; }
+        .info-box { background-color: white; padding: 15px 25px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); min-width: 80px; }
+        .info-label { font-size: 11px; color: #8e8e93; display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-value { font-size: 18px; font-weight: 800; color: #1c1c1e; }
+        .desc { font-size: 16px; line-height: 1.6; color: #3a3a3c; text-align: justify; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        
         .hidden { display: none !important; }
-        .loading { text-align: center; color: #007aff; padding: 20px; }
+        .loading { text-align: center; color: #8e8e93; padding: 30px; font-size: 14px; font-weight: 500; }
     </style>
 </head>
 <body>
@@ -144,16 +183,18 @@
             <div class="dash-item"><span class="dash-val" id="stat-authors">-</span><span class="dash-lbl">Yazar</span></div>
         </div>
         <button class="btn-random" onclick="pickRandomBook()">🎲 Ne Okusam?</button>
+        
         <div class="controls">
             <input type="text" id="search-input" class="search-box" placeholder="Kitap ara..." onkeyup="applyFilters()">
             <select id="author-filter" class="filter-select" onchange="applyFilters()">
                 <option value="">Tüm Yazarlar</option>
             </select>
         </div>
+        
         <div class="container" style="padding-top: 0;">
             <div id="loading-spinner" class="loading hidden">Veriler güncelleniyor...</div>
             <div id="book-list"></div>
-            <div id="empty-msg" class="loading hidden" style="color:#999">Kitap bulunamadı.</div>
+            <div id="empty-msg" class="loading hidden" style="color:#999; margin-top: 30px; text-align: center;">🔍 Kitap bulunamadı.</div>
         </div>
     </div>
 
@@ -161,24 +202,26 @@
         <div id="authors-grid" class="author-grid"></div>
     </div>
 
-    <div id="page-login" class="container hidden" style="text-align: center; padding-top: 50px;">
-        <div style="font-size: 60px; margin-bottom: 20px; background:white; width:100px; height:100px; line-height:100px; border-radius:50%; margin:0 auto 20px auto; box-shadow:0 4px 10px rgba(0,0,0,0.1);">🔐</div>
-        <h2>Yönetici Girişi</h2>
-        <input type="number" id="pin-input" placeholder="Şifre" style="text-align: center;">
+    <div id="page-login" class="container hidden" style="text-align: center; padding-top: 60px;">
+        <div style="font-size: 60px; margin-bottom: 25px; background:white; width:110px; height:110px; line-height:110px; border-radius:50%; margin:0 auto 25px auto; box-shadow:0 10px 30px rgba(0,0,0,0.1);">🔐</div>
+        <h2 style="margin-bottom: 10px; color:#1c1c1e;">Yönetici Girişi</h2>
+        <p style="color:#8e8e93; margin-bottom: 30px;">Kitap eklemek veya silmek için şifre girin.</p>
+        <input type="number" id="pin-input" placeholder="Şifre" style="text-align: center; font-size: 24px; letter-spacing: 5px;">
         <button class="btn" onclick="checkLogin()">Giriş Yap</button>
     </div>
 
     <div id="page-add" class="container hidden">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <h3 style="margin:0;">Yeni Kitap Kaydı</h3>
-            <span onclick="logout()" style="color:red; font-weight:bold; cursor:pointer;">Çıkış</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 style="margin:0; font-size: 22px;">Yeni Kitap Kaydı</h3>
+            <span onclick="logout()" style="color:#ff3b30; font-weight:bold; cursor:pointer; background: rgba(255,59,48,0.1); padding: 5px 12px; border-radius: 12px; font-size: 14px;">Çıkış</span>
         </div>
-        <label style="font-size:12px; color:#666;">Otomatik Doldur</label>
+        <label style="font-size:13px; color:#8e8e93; font-weight:600; margin-bottom:8px; display:block;">OTOMATİK DOLDUR</label>
         <div class="isbn-row">
             <input type="number" id="isbn-input" class="isbn-input" placeholder="Barkod No (ISBN)">
             <button class="btn-magic" onclick="fetchByISBN()">🪄</button>
         </div>
-        <hr style="border:0; border-top:1px solid #ddd; margin-bottom:20px;">
+        
+        <label style="font-size:13px; color:#8e8e93; font-weight:600; margin-bottom:8px; display:block;">MANUEL GİRİŞ</label>
         <input type="text" id="title-input" placeholder="Kitap Adı">
         <input type="text" id="author-input" placeholder="Yazar Adı">
         <button id="save-btn" class="btn" onclick="saveBook()">Envantere Kaydet</button>
@@ -186,8 +229,8 @@
 
     <div id="success-popup" class="success-popup">
         <span class="success-icon">🎉</span>
-        <h2 style="margin:10px 0;">Harika!</h2>
-        <p>Kitap başarıyla raflara eklendi.</p>
+        <h2 style="margin:10px 0; color:#1c1c1e;">Harika!</h2>
+        <p style="color:#8e8e93; margin:0;">Kitap başarıyla raflara eklendi.</p>
     </div>
 
     <div id="author-modal" class="modal-overlay" onclick="closeModal(event, 'author-modal')">
@@ -222,17 +265,11 @@
         let isLoggedIn = false;
         let currentDetailBook = null;
 
-        // --- YENİ: HIZLI BAŞLANGIÇ (ÖNBELLEK) ---
         window.onload = function() {
-            // 1. Önbellekte veri varsa hemen göster (HIZ!)
             const cachedData = localStorage.getItem('kutuphanem_data');
             if (cachedData) {
-                try {
-                    allBooks = JSON.parse(cachedData);
-                    refreshUI(); // Arayüzü çiz
-                } catch(e) { console.log("Önbellek hatası", e); }
+                try { allBooks = JSON.parse(cachedData); refreshUI(); } catch(e) {}
             }
-            // 2. Arka planda taze veri çek
             fetchBooks(); 
         };
 
@@ -253,12 +290,9 @@
             }
         }
 
-        // --- YENİ: GELİŞMİŞ VERİ ÇEKME ---
         function fetchBooks() {
             const spinner = document.getElementById('loading-spinner');
-            // Eğer hiç veri yoksa spinner'ı göster, varsa gösterme (arkada çalışsın)
             if(allBooks.length === 0) spinner.classList.remove('hidden');
-            
             fetch(API_URL)
                 .then(res => res.json())
                 .then(data => {
@@ -266,11 +300,9 @@
                         ad: b.ad ? String(b.ad).trim() : "İsimsiz",
                         yazar: b.yazar ? String(b.yazar).trim() : "Bilinmiyor"
                     }));
-                    
-                    // Veri değiştiyse güncelle ve kaydet
                     if (JSON.stringify(newData) !== JSON.stringify(allBooks)) {
                         allBooks = newData;
-                        localStorage.setItem('kutuphanem_data', JSON.stringify(allBooks)); // Önbelleğe al
+                        localStorage.setItem('kutuphanem_data', JSON.stringify(allBooks));
                         refreshUI();
                     }
                 })
@@ -278,24 +310,31 @@
                 .finally(() => spinner.classList.add('hidden'));
         }
 
-        function refreshUI() {
-            updateStats(); updateAuthorFilter(); applyFilters(); renderAuthorsPage();
-        }
+        function refreshUI() { updateStats(); updateAuthorFilter(); applyFilters(); renderAuthorsPage(); }
 
-        // --- YENİ: KEYİFLİ KAYIT BİLDİRİMİ ---
         function showSuccessPopup() {
             const popup = document.getElementById('success-popup');
             popup.classList.add('active');
-            setTimeout(() => { popup.classList.remove('active'); }, 2500); // 2.5 sn sonra kapat
+            setTimeout(() => { popup.classList.remove('active'); }, 2500);
         }
 
-        // ... (Diğer fonksiyonlar aynı: renderAuthorsPage, openAuthorBooks, updateStats, updateAuthorFilter, applyFilters, renderBooks, pickRandomBook, showBookDetail, toggleModal, closeModal, checkLogin, logout, fetchByISBN) ...
         function renderAuthorsPage() { const container = document.getElementById('authors-grid'); container.innerHTML = ''; const groups = {}; allBooks.forEach(book => { const author = book.yazar || "Bilinmiyor"; if (!groups[author]) groups[author] = []; groups[author].push(book); }); const sortedAuthors = Object.keys(groups).sort(); if (sortedAuthors.length === 0) { container.innerHTML = '<div style="grid-column: span 2; text-align:center; color:#999;">Yazar yok.</div>'; return; } sortedAuthors.forEach(author => { const count = groups[author].length; const tile = document.createElement('div'); tile.className = 'author-tile'; tile.onclick = () => openAuthorBooks(author, groups[author]); tile.innerHTML = `<span class="tile-icon">👤</span><span class="tile-name">${author}</span><span class="tile-count">${count} Kitap</span>`; container.appendChild(tile); }); }
         function openAuthorBooks(authorName, books) { const body = document.getElementById('author-modal-body'); body.innerHTML = `<h2 style="margin-top:0; text-align:center; margin-bottom:20px;">${authorName}</h2>`; books.forEach(book => { const item = document.createElement('div'); item.className = 'book-item'; item.onclick = () => showBookDetail(book); item.innerHTML = `<div class="book-icon">📖</div><div class="book-info"><span class="book-title">${book.ad}</span></div><span class="arrow">›</span>`; body.appendChild(item); }); toggleModal('author-modal', true); }
         function updateStats() { document.getElementById('stat-total').innerText = allBooks.length; const authors = new Set(allBooks.map(b => b.yazar)); document.getElementById('stat-authors').innerText = authors.size; }
         function updateAuthorFilter() { const select = document.getElementById('author-filter'); while (select.options.length > 1) { select.remove(1); } const authors = [...new Set(allBooks.map(b => b.yazar))].sort(); authors.forEach(auth => { if(auth) { const opt = document.createElement('option'); opt.value = auth; opt.innerText = auth; select.appendChild(opt); } }); }
         function applyFilters() { const query = document.getElementById('search-input').value.toLowerCase(); const authorFilter = document.getElementById('author-filter').value; const filtered = allBooks.filter(book => { return (book.ad.toLowerCase().includes(query) || book.yazar.toLowerCase().includes(query)) && (authorFilter === "" || book.yazar === authorFilter); }); renderBooks(filtered); }
-        function renderBooks(books) { const list = document.getElementById('book-list'); const emptyMsg = document.getElementById('empty-msg'); list.innerHTML = ''; if (books.length === 0) { emptyMsg.classList.remove('hidden'); return; } emptyMsg.classList.add('hidden'); books.forEach(book => { const item = document.createElement('div'); item.className = 'book-item'; item.onclick = () => showBookDetail(book); item.innerHTML = `<div class="book-icon">📖</div><div class="book-info"><span class="book-title">${book.ad}</span><span class="book-author">${book.yazar}</span></div><span class="arrow">›</span>`; list.appendChild(item); }); }
+        
+        function renderBooks(books) { 
+            const list = document.getElementById('book-list'); const emptyMsg = document.getElementById('empty-msg'); list.innerHTML = ''; 
+            if (books.length === 0) { emptyMsg.classList.remove('hidden'); return; } 
+            emptyMsg.classList.add('hidden'); 
+            books.forEach(book => { 
+                const item = document.createElement('div'); item.className = 'book-item'; item.onclick = () => showBookDetail(book); 
+                item.innerHTML = `<div class="book-icon">📖</div><div class="book-info"><span class="book-title">${book.ad}</span><span class="book-author">${book.yazar}</span></div><span class="arrow">›</span>`; 
+                list.appendChild(item); 
+            }); 
+        }
+        
         function pickRandomBook() { if (allBooks.length === 0) return; const book = allBooks[Math.floor(Math.random() * allBooks.length)]; alert("🎲 Bugün Şunu Oku:\n\n" + book.ad + "\n" + book.yazar); }
         function showBookDetail(book) { currentDetailBook = book; const body = document.getElementById('detail-modal-body'); body.innerHTML = '<div class="loading">Yükleniyor...</div>'; toggleModal('detail-modal', true); const query = `intitle:${book.ad}+inauthor:${book.yazar}`; fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`).then(res => res.json()).then(data => { let img='', pageCount='-', year='-', desc='Özet bilgisi bulunamadı.'; if (data.items?.length > 0) { const info = data.items[0].volumeInfo; if (info.imageLinks?.thumbnail) img = info.imageLinks.thumbnail.replace('http:', 'https:'); pageCount = info.pageCount || '-'; year = info.publishedDate?.substring(0,4) || '-'; desc = info.description || desc; } let deleteBtn = ''; if (isLoggedIn) { deleteBtn = `<button class="btn-delete" onclick="deleteBook()">🗑️ Bu Kitabı Sil</button>`; } body.innerHTML = `${img ? `<img src="${img}" class="detail-cover">` : '<div class="detail-cover" style="display:flex;align-items:center;justify-content:center;font-size:40px;">📚</div>'}<div class="detail-title">${book.ad}</div><span class="detail-author">${book.yazar}</span><div class="info-row"><div class="info-box"><span class="info-label">Sayfa</span><span class="info-value">${pageCount}</span></div><div class="info-box"><span class="info-label">Yıl</span><span class="info-value">${year}</span></div></div><h4>Özet</h4><div class="desc">${desc}</div>${deleteBtn}`; }).catch(() => body.innerHTML = '<p>Detay yok.</p>'); }
         function toggleModal(id, show) { document.getElementById(id).style.display = show ? 'flex' : 'none'; }
@@ -303,15 +342,13 @@
         function checkLogin() { if (document.getElementById('pin-input').value === ADMIN_PIN) { isLoggedIn = true; document.getElementById('pin-input').value = ''; switchTab('add'); } else { alert("Hatalı Şifre!"); } }
         function logout() { isLoggedIn = false; switchTab('add'); }
         function fetchByISBN() { const isbn = document.getElementById('isbn-input').value; if (isbn.length < 5) { alert("Geçersiz No"); return; } const btn = document.querySelector('.btn-magic'); btn.innerText = '⏳'; fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`).then(res => res.json()).then(data => { if (data.items?.length > 0) { const info = data.items[0].volumeInfo; document.getElementById('title-input').value = info.title || ""; document.getElementById('author-input').value = info.authors?.join(", ") || ""; alert(`Bulundu: ${info.title}`); } else { alert("Bulunamadı."); } }).catch(() => alert("Hata.")).finally(() => btn.innerText = '🪄'); }
-        // ...
-
+        
         function deleteBook() {
             if (!confirm(`"${currentDetailBook.ad}" silinsin mi?`)) return;
             const btn = document.querySelector('.btn-delete'); btn.innerText = 'Siliniyor...'; btn.disabled = true;
             fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', ad: currentDetailBook.ad, yazar: currentDetailBook.yazar }) })
             .then(res => res.json()).then(data => {
                 if(data.status === "Silindi") {
-                    // Önbellekten de sil
                     allBooks = allBooks.filter(b => b.ad !== currentDetailBook.ad || b.yazar !== currentDetailBook.yazar);
                     localStorage.setItem('kutuphanem_data', JSON.stringify(allBooks));
                     refreshUI();
@@ -330,10 +367,9 @@
             const saveBtn = document.getElementById('save-btn'); saveBtn.disabled = true; saveBtn.innerText = 'Kaydediliyor...';
             fetch(API_URL, { method: 'POST', body: JSON.stringify({ ad: adInput, yazar: yazarInput }) })
             .then(() => {
-                // YENİ: Başarılı Popup Göster
                 showSuccessPopup();
                 ['title-input', 'author-input', 'isbn-input'].forEach(id => document.getElementById(id).value = '');
-                fetchBooks(); // Verileri yenile
+                fetchBooks(); 
             }).catch(() => alert("Hata.")).finally(() => { saveBtn.disabled = false; saveBtn.innerText = 'Envantere Kaydet'; });
         }
     </script>
