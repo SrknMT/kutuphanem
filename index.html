@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Kütüphanem">
+    <title>Kütüphanem</title>
+    <style>
+        /* --- STİLLER (iPhone Görünümü İçin) --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f2f2f7;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 80px; /* Alt menü payı */
+        }
+
+        /* Üst Header */
+        .header {
+            background-color: white;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #c6c6c8;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding-top: env(safe-area-inset-top); /* Çentik desteği */
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Sayfa Düzeni */
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Arama Kutusu & Inputlar */
+        input[type="text"], input[type="number"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #d1d1d6;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box; /* Taşmayı önler */
+            background-color: #e3e3e8;
+            outline: none;
+        }
+
+        /* Kitap Listesi */
+        .book-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .book-item:active { background-color: #e5e5ea; }
+        .book-icon {
+            font-size: 24px;
+            background-color: #f2f2f7;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+        .book-info { flex: 1; }
+        .book-title { font-size: 16px; font-weight: 600; color: #000; display: block; }
+        .book-author { font-size: 14px; color: #8e8e93; margin-top: 3px; display: block; }
+        .arrow { color: #c7c7cc; font-size: 20px; }
+
+        /* Butonlar */
+        .btn {
+            background-color: #007aff;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:disabled { background-color: #b4d5fe; }
+        .btn-magic {
+            background-color: #ff9500;
+            width: auto;
+            border-radius: 0 10px 10px 0;
+            padding: 0 20px;
+            font-size: 24px;
+            margin-bottom: 15px;
+            border: 1px solid #d1d1d6;
+            border-left: none;
+        }
+
+        /* Alt Menü (Tab Bar) */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-top: 1px solid #c6c6c8;
+            display: flex;
+            justify-content: space-around;
+            padding-bottom: env(safe-area-inset-bottom);
+            z-index: 100;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px;
+            flex: 1;
+            text-align: center;
+            color: #8e8e93;
+            cursor: pointer;
+        }
+        .tab-btn.active { color: #007aff; }
+        .tab-icon { font-size: 24px; display: block; margin-bottom: 2px; }
+        .tab-text { font-size: 10px; font-weight: 500; }
+
+        /* Modal (Popup) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: flex-end; /* Alttan gelsin */
+        }
+        .modal-content {
+            background-color: white;
+            width: 100%;
+            max-width: 600px;
+            height: 85%;
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+            margin: 0 auto;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #007aff;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            background: none; border: none;
+        }
+
+        /* Detay Stilleri */
+        .detail-cover {
+            width: 120px; height: 180px;
+            background-color: #ddd;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            object-fit: cover;
+        }
+        .detail-title { font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 5px; }
+        .detail-author { font-size: 18px; color: #666; text-align: center; margin-bottom: 20px; display: block; }
+        .info-row { display: flex; justify-content: center; margin-bottom: 20px; }
+        .info-box {
+            background-color: #f2f2f7;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 0 5px;
+            text-align: center;
+        }
+        .info-label { font-size: 12px; color: #666; display: block; }
+        .info-value { font-size: 16px; font-weight: bold; }
+        .desc { font-size: 16px; line-height: 1.5; color: #333; text-align: justify; }
+
+        /* Yardımcı Sınıflar */
+        .hidden { display: none !important; }
+        .loading { text-align: center; color: #007aff; padding: 20px; }
+        .error-msg { color: red; text-align: center; margin-top: 10px; }
+
+        /* ISBN Satırı */
+        .isbn-row { display: flex; }
+        .isbn-input { border-radius: 10px 0 0 10px !important; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1 id="header-title">Kütüphanem 📚</h1>
+    </div>
+
+    <div id="page-library" class="container">
+        <input type="text" id="search-input" placeholder="Kütüphanede ara..." onkeyup="filterBooks()">
+        <div id="loading-spinner" class="loading hidden">Yükleniyor...</div>
+        <div id="book-list">
+            </div>
+        <div id="empty-msg" class="loading hidden" style="color:#999">Kitap bulunamadı.</div>
+    </div>
+
+    <div id="page-login" class="container hidden" style="text-align: center; padding-top: 50px;">
+        <div style="font-size: 60px; margin-bottom: 20px;">🔐</div>
+        <h2>Yönetici Girişi</h2>
+        <p style="color:#666; margin-bottom: 30px;">Kitap eklemek için şifreyi girin.</p>
+        <input type="number" id="pin-input" placeholder="Şifre (1234)" style="text-align: center;">
+        <button class="btn" onclick="checkLogin()">Giriş Yap</button>
+    </div>
+
+    <div id="page-add" class="container hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="margin:0;">Yeni Kitap Kaydı</h3>
+            <span onclick="logout()" style="color:red; font-weight:bold; cursor:pointer;">Çıkış</span>
+        </div>
+
+        <label style="font-size:12px; color:#666;">Otomatik Doldur (İsteğe Bağlı)</label>
+        <div class="isbn-row">
+            <input type="number" id="isbn-input" class="isbn-input" placeholder="Barkod No (ISBN)">
+            <button class="btn-magic" onclick="fetchByISBN()">🪄</button>
+        </div>
+        
+        <hr style="border:0; border-top:1px solid #ddd; margin-bottom:20px;">
+
+        <label style="font-weight:bold;">Kitap Bilgileri</label>
+        <input type="text" id="title-input" placeholder="Kitap Adı">
+        <input type="text" id="author-input" placeholder="Yazar Adı">
+
+        <button id="save-btn" class="btn" onclick="saveBook()">Envantere Kaydet</button>
+        <div id="add-status" class="loading hidden">Kaydediliyor...</div>
+    </div>
+
+    <div id="detail-modal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="toggleModal(false)">Kapat</button>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" id="tab-library" onclick="switchTab('library')">
+            <span class="tab-icon">📚</span>
+            <span class="tab-text">Kütüphane</span>
+        </button>
+        <button class="tab-btn" id="tab-add" onclick="switchTab('add')">
+            <span class="tab-icon">➕</span>
+            <span class="tab-text">Kitap Ekle</span>
+        </button>
+    </div>
+
+    <script>
+        // --- AYARLAR ---
+        // Apps Script linkini buraya yapıştır:
+        const API_URL = "https://script.google.com/macros/s/AKfycby7oenOOtjnNkDTQs7G8HdaLkekcQyhhutWpELd_6LtAJ-qc9J6qnUQvthCWVgmzuqibg/exec";
+        const ADMIN_PIN = "1234";
+
+        // --- DEĞİŞKENLER ---
+        let allBooks = [];
+        let isLoggedIn = false;
+
+        // --- BAŞLANGIÇ ---
+        window.onload = function() {
+            fetchBooks();
+        };
+
+        // --- SAYFA GEÇİŞLERİ ---
+        function switchTab(tab) {
+            // Butonları güncelle
+            document.getElementById('tab-library').className = tab === 'library' ? 'tab-btn active' : 'tab-btn';
+            document.getElementById('tab-add').className = tab === 'add' ? 'tab-btn active' : 'tab-btn';
+
+            // Sayfaları gizle
+            document.getElementById('page-library').classList.add('hidden');
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('page-add').classList.add('hidden');
+
+            // Başlığı güncelle ve sayfayı aç
+            if (tab === 'library') {
+                document.getElementById('header-title').innerText = 'Kütüphanem 📚';
+                document.getElementById('page-library').classList.remove('hidden');
+            } else {
+                document.getElementById('header-title').innerText = 'Yönetici Paneli 🔐';
+                if (isLoggedIn) {
+                    document.getElementById('page-add').classList.remove('hidden');
+                } else {
+                    document.getElementById('page-login').classList.remove('hidden');
+                }
+            }
+        }
+
+        // --- KÜTÜPHANE FONKSİYONLARI ---
+        function fetchBooks() {
+            const spinner = document.getElementById('loading-spinner');
+            const list = document.getElementById('book-list');
+            
+            spinner.classList.remove('hidden');
+            list.innerHTML = '';
+
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    allBooks = data;
+                    renderBooks(data);
+                })
+                .catch(err => {
+                    list.innerHTML = '<div class="error-msg">Bağlantı hatası! Linki kontrol edin.</div>';
+                })
+                .finally(() => {
+                    spinner.classList.add('hidden');
+                });
+        }
+
+        function renderBooks(books) {
+            const list = document.getElementById('book-list');
+            const emptyMsg = document.getElementById('empty-msg');
+            list.innerHTML = '';
+
+            if (books.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+            emptyMsg.classList.add('hidden');
+
+            books.forEach(book => {
+                const item = document.createElement('div');
+                item.className = 'book-item';
+                item.onclick = () => showBookDetail(book);
+                item.innerHTML = `
+                    <div class="book-icon">📖</div>
+                    <div class="book-info">
+                        <span class="book-title">${book.ad}</span>
+                        <span class="book-author">${book.yazar || 'Yazar Bilinmiyor'}</span>
+                    </div>
+                    <span class="arrow">›</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function filterBooks() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allBooks.filter(book => {
+                const ad = book.ad ? String(book.ad).toLowerCase() : "";
+                const yazar = book.yazar ? String(book.yazar).toLowerCase() : "";
+                return ad.includes(query) || yazar.includes(query);
+            });
+            renderBooks(filtered);
+        }
+
+        // --- DETAY MODALI ---
+        function showBookDetail(book) {
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = '<div class="loading">Bilgiler Google\'dan çekiliyor...</div>';
+            toggleModal(true);
+
+            // Google Books API
+            const query = `intitle:${book.ad}+inauthor:${book.yazar}`;
+            fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`)
+                .then(res => res.json())
+                .then(data => {
+                    let img = '';
+                    let pageCount = '-';
+                    let year = '-';
+                    let desc = 'Açıklama bulunamadı.';
+
+                    if (data.items && data.items.length > 0) {
+                        const info = data.items[0].volumeInfo;
+                        if (info.imageLinks && info.imageLinks.thumbnail) {
+                            img = info.imageLinks.thumbnail.replace('http:', 'https:');
+                        }
+                        pageCount = info.pageCount || '-';
+                        year = info.publishedDate ? info.publishedDate.substring(0,4) : '-';
+                        desc = info.description || desc;
+                    }
+
+                    modalBody.innerHTML = `
+                        ${img ? `<img src="${img}" class="detail-cover">` : '<div class="detail-cover" style="display:flex;align-items:center;justify-content:center;font-size:40px;">📚</div>'}
+                        <div class="detail-title">${book.ad}</div>
+                        <span class="detail-author">${book.yazar}</span>
+                        <div class="info-row">
+                            <div class="info-box">
+                                <span class="info-label">Sayfa</span>
+                                <span class="info-value">${pageCount}</span>
+                            </div>
+                            <div class="info-box">
+                                <span class="info-label">Yıl</span>
+                                <span class="info-value">${year}</span>
+                            </div>
+                        </div>
+                        <h4 style="margin-bottom:5px;">Özet</h4>
+                        <div class="desc">${desc}</div>
+                    `;
+                })
+                .catch(() => {
+                    modalBody.innerHTML = '<h3>Hata</h3><p>Detaylar yüklenemedi.</p>';
+                });
+        }
+
+        function toggleModal(show) {
+            const modal = document.getElementById('detail-modal');
+            modal.style.display = show ? 'flex' : 'none';
+        }
+
+        function closeModal(event) {
+            if (event.target.id === 'detail-modal') {
+                toggleModal(false);
+            }
+        }
+
+        // --- YÖNETİCİ GİRİŞİ ---
+        function checkLogin() {
+            const pin = document.getElementById('pin-input').value;
+            if (pin === ADMIN_PIN) {
+                isLoggedIn = true;
+                document.getElementById('pin-input').value = '';
+                switchTab('add');
+            } else {
+                alert("Hatalı Şifre!");
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            switchTab('add'); // Bu login sayfasına atar
+        }
+
+        // --- KİTAP EKLEME (ISBN & MANUEL) ---
+        function fetchByISBN() {
+            const isbn = document.getElementById('isbn-input').value;
+            if (isbn.length < 5) { alert("Geçersiz Barkod Numarası"); return; }
+            
+            const btn = document.querySelector('.btn-magic');
+            btn.innerText = '⏳';
+
+            fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.items && data.items.length > 0) {
+                        const info = data.items[0].volumeInfo;
+                        document.getElementById('title-input').value = info.title || "";
+                        document.getElementById('author-input').value = info.authors ? info.authors.join(", ") : "";
+                        alert(`Bulundu: ${info.title}`);
+                    } else {
+                        alert("Barkod bulunamadı. Lütfen elle yazın.");
+                    }
+                })
+                .catch(() => alert("Bağlantı hatası."))
+                .finally(() => btn.innerText = '🪄');
+        }
+
+        function saveBook() {
+            const ad = document.getElementById('title-input').value;
+            const yazar = document.getElementById('author-input').value;
+
+            if (!ad || !yazar) { alert("Lütfen alanları doldurun."); return; }
+
+            const saveBtn = document.getElementById('save-btn');
+            const status = document.getElementById('add-status');
+
+            saveBtn.disabled = true;
+            saveBtn.innerText = 'Kaydediliyor...';
+            
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ ad: ad, yazar: yazar })
+            })
+            .then(() => {
+                alert("Kitap Başarıyla Eklendi! 🎉");
+                document.getElementById('title-input').value = '';
+                document.getElementById('author-input').value = '';
+                document.getElementById('isbn-input').value = '';
+                fetchBooks(); // Listeyi güncelle
+            })
+            .catch(() => alert("Kaydedilemedi. İnternetinizi kontrol edin."))
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerText = 'Envantere Kaydet';
+            });
+        }
+    </script>
+</body>
+</html>
