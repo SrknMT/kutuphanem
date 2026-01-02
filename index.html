@@ -22,40 +22,33 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg-color); margin: 0; padding: 0; color: var(--text-main);
-            -webkit-tap-highlight-color: transparent; padding-bottom: 90px;
+            -webkit-tap-highlight-color: transparent; padding-bottom: 110px; /* Alt bar için boşluk */
             overflow-x: hidden;
         }
 
-        /* NUMARA BUTONLARINI (SPINNER) KALDIRMA */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
-        /* TOAST BİLDİRİM */
-        #toast-container {
-            position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
-            z-index: 10000; width: 85%; max-width: 350px; pointer-events: none;
-        }
-        .toast {
-            background: rgba(44, 44, 46, 0.98); backdrop-filter: blur(15px);
-            color: white; padding: 15px 20px; border-radius: 20px;
-            margin-bottom: 12px; text-align: center; font-size: 14px; font-weight: 600;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            transform: translateY(-120px); opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .toast.show { transform: translateY(0); opacity: 1; }
-        .toast.success { border-bottom: 3px solid var(--success); }
-        .toast.error { border-bottom: 3px solid var(--danger); }
-        .toast.warning { border-bottom: 3px solid var(--warning); color: var(--warning); }
-
-        /* HEADER */
+        /* HEADER (DARALTILDI & FONT GENİŞLETİLDİ) */
         .header {
             background-color: rgba(28, 28, 30, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 10px; /* Daha dar */
+            text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1);
             position: sticky; top: 0; z-index: 100; padding-top: env(safe-area-inset-top);
         }
+        .header h1 { 
+            margin: 0; 
+            font-size: 21px; /* Font biraz daha geniş/büyük */
+            font-weight: 700; 
+            letter-spacing: -0.2px; 
+            color: var(--text-main); 
+        }
+
+        /* TOAST */
+        #toast-container { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); z-index: 10000; width: 85%; max-width: 350px; pointer-events: none; }
+        .toast { background: rgba(44, 44, 46, 0.98); backdrop-filter: blur(15px); color: white; padding: 15px 20px; border-radius: 20px; margin-bottom: 12px; text-align: center; font-size: 14px; font-weight: 600; box-shadow: 0 15px 35px rgba(0,0,0,0.6); transform: translateY(-120px); opacity: 0; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid rgba(255,255,255,0.1); }
+        .toast.show { transform: translateY(0); opacity: 1; }
 
         /* İSTATİSTİKLER */
         .main-stats { display: flex; gap: 12px; margin: 15px 20px; }
@@ -68,52 +61,48 @@
 
         /* KİTAP ÖĞESİ */
         .container { padding: 0 20px; max-width: 600px; margin: 0 auto; }
-        .book-item {
-            background: var(--card-bg); padding: 16px; border-radius: 18px; margin-bottom: 10px;
-            display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.05);
-        }
+        .book-item { background: var(--card-bg); padding: 16px; border-radius: 18px; margin-bottom: 10px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
         .book-item:active { transform: scale(0.97); background: #2c2c2e; }
         .book-info { flex: 1; margin-left: 15px; overflow: hidden; }
         .book-title { font-size: 17px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .book-author { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
 
+        /* TAB BAR (İKONLAR VE YAZILAR BÜYÜTÜLDÜ) */
+        .tab-bar { 
+            position: fixed; bottom: 0; width: 100%; background: rgba(28, 28, 30, 0.98); 
+            backdrop-filter: blur(25px); display: flex; justify-content: space-around; 
+            padding-bottom: calc(8px + env(safe-area-inset-bottom)); 
+            padding-top: 10px; 
+            height: 70px; /* İçerik büyüdüğü için biraz alan açıldı */
+            border-top: 1px solid rgba(255,255,255,0.12); z-index: 1000;
+        }
+        .tab-btn { background: none; border: none; color: var(--text-dim); text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.2s; }
+        .tab-btn.active { color: var(--accent); }
+        
+        .tab-ico { 
+            font-size: 30px; /* İkonlar büyütüldü (Eski 24px) */
+            margin-bottom: 2px;
+        }
+        .tab-btn span:last-child { 
+            font-size: 13px; /* Yazılar büyütüldü (Eski 11px) */
+            font-weight: 800; /* Daha kalın */
+            display: block;
+        }
+
         /* MODAL */
-        .modal-overlay { 
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); 
-            backdrop-filter: blur(15px); z-index: 2000; align-items: flex-end; 
-        }
-        .modal-content { 
-            background: #1c1c1e; width: 100%; border-radius: 30px 30px 0 0; 
-            padding: 30px 25px; box-sizing: border-box; max-height: 95vh; 
-            overflow-y: auto; position: relative;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); z-index: 2000; align-items: flex-end; }
+        .modal-content { background: #1c1c1e; width: 100%; border-radius: 30px 30px 0 0; padding: 30px 25px; box-sizing: border-box; max-height: 95vh; overflow-y: auto; position: relative; }
         .modal-drag-handle { width: 40px; height: 5px; background: #3a3a3c; border-radius: 10px; margin: -15px auto 20px auto; }
 
         /* YAZAR KARTLARI */
-        .author-tile {
-            background: var(--card-bg); padding: 25px 15px; border-radius: 20px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
+        .author-tile { background: var(--card-bg); padding: 25px 15px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
         .tile-name { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
-
-        /* TAB BAR */
-        .tab-bar { 
-            position: fixed; bottom: 0; width: 100%; background: rgba(28, 28, 30, 0.95); 
-            backdrop-filter: blur(25px); display: flex; justify-content: space-around; 
-            padding-bottom: env(safe-area-inset-bottom); height: 60px;
-            border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000;
-        }
-        .tab-btn { background: none; border: none; color: var(--text-dim); text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .tab-btn.active { color: var(--accent); }
-        .tab-ico { font-size: 24px; }
-        .tab-btn span { font-size: 11px; font-weight: 700; margin-top: 2px; }
 
         /* FORMLAR */
         .input-std { width: 100%; background: #2c2c2e; border: 1px solid #3a3a3c; padding: 16px; border-radius: 14px; color: white; margin-bottom: 12px; box-sizing: border-box; font-size: 16px; outline: none; }
         .btn-primary { width: 100%; background: var(--accent); color: white; border: none; padding: 18px; border-radius: 15px; font-weight: 700; font-size: 16px; }
 
         .hidden { display: none !important; }
-        
         .progress-bar { height: 10px; background: #2c2c2e; border-radius: 5px; overflow: hidden; display: flex; margin: 15px 0; }
         .progress-fill { height: 100%; transition: 1s ease; }
     </style>
@@ -159,7 +148,7 @@
 
     <div id="page-login" class="container hidden" style="text-align: center; padding-top: 50px;">
         <div style="font-size: 40px; margin-bottom: 20px;">🔐</div>
-        <input type="number" id="pin-input" placeholder="Şifre girin" inputmode="numeric" class="input-std" style="text-align:center; width: 160px;">
+        <input type="number" id="pin-input" placeholder="Şifre" inputmode="numeric" class="input-std" style="text-align:center; width: 160px;">
         <button class="btn-primary" onclick="checkLogin()">Giriş Yap</button>
     </div>
 
@@ -178,17 +167,8 @@
     </div>
 
     <div id="detail-modal" class="modal-overlay" onclick="closeModal(event, 'detail-modal')">
-        <div class="modal-content">
-            <div class="modal-drag-handle"></div>
-            <div id="detail-modal-body"></div>
-            <div style="display:flex; gap:10px; margin-top:30px;">
-                <button class="btn-primary" style="background:var(--warning); color:black; flex:1;" onclick="updateBookStatus('todo')">Bekliyor</button>
-                <button class="btn-primary" style="background:var(--accent); flex:1;" onclick="updateBookStatus('reading')">Okuyor</button>
-                <button class="btn-primary" style="background:var(--success); color:black; flex:1;" onclick="updateBookStatus('read')">Okundu</button>
-            </div>
-        </div>
+        <div class="modal-content"><div class="modal-drag-handle"></div><div id="detail-modal-body"></div><div style="display:flex; gap:10px; margin-top:30px;"><button class="btn-primary" style="background:var(--warning); color:black; flex:1;" onclick="updateBookStatus('todo')">Bekliyor</button><button class="btn-primary" style="background:var(--accent); flex:1;" onclick="updateBookStatus('reading')">Okuyor</button><button class="btn-primary" style="background:var(--success); color:black; flex:1;" onclick="updateBookStatus('read')">Okundu</button></div></div>
     </div>
-
     <div id="author-modal" class="modal-overlay" onclick="closeModal(event, 'author-modal')">
         <div class="modal-content"><div class="modal-drag-handle"></div><div id="author-modal-body"></div></div>
     </div>
@@ -216,18 +196,7 @@
             fetchBooks();
         };
 
-        function cleanText(text) {
-            return text.toString()
-                .trim()
-                .toLowerCase()
-                .replace(/ı/g, 'i')
-                .replace(/ğ/g, 'g')
-                .replace(/ü/g, 'u')
-                .replace(/ş/g, 's')
-                .replace(/ö/g, 'o')
-                .replace(/ç/g, 'c');
-        }
-
+        function cleanText(text) { return text.toString().trim().toLowerCase().replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c'); }
         function showToast(msg, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -235,16 +204,12 @@
             toast.innerText = msg;
             container.appendChild(toast);
             setTimeout(() => toast.classList.add('show'), 100);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 500);
-            }, 3500);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 500); }, 3500);
         }
 
         function fetchBooks() {
             fetch(API_URL).then(res => res.json()).then(data => {
-                allBooks = data.map(b => ({ ad: b.ad.trim(), yazar: b.yazar.trim() }))
-                               .sort((a,b) => a.ad.localeCompare(b.ad, 'tr'));
+                allBooks = data.map(b => ({ ad: b.ad.trim(), yazar: b.yazar.trim() })).sort((a,b) => a.ad.localeCompare(b.ad, 'tr'));
                 localStorage.setItem('kutuphanem_data', JSON.stringify(allBooks));
                 refreshUI();
             });
@@ -253,160 +218,71 @@
         function refreshUI() {
             document.getElementById('main-total-count').innerText = allBooks.length;
             document.getElementById('main-author-count').innerText = new Set(allBooks.map(b => b.yazar)).size;
-            
             let stats = { todo: 0, reading: 0, read: 0 };
-            allBooks.forEach(b => {
-                const s = bookStatuses[`${b.ad}-${b.yazar}`];
-                if (s) stats[s]++;
-            });
-
+            allBooks.forEach(b => { const s = bookStatuses[`${b.ad}-${b.yazar}`]; if (s) stats[s]++; });
             document.getElementById('stat-read-val').innerText = stats.read;
             document.getElementById('stat-reading-val').innerText = stats.reading;
             document.getElementById('stat-todo-val').innerText = stats.todo;
-
             const total = allBooks.length;
             if (total > 0) {
                 document.getElementById('bar-read').style.width = (stats.read / total * 100) + "%";
                 document.getElementById('bar-reading').style.width = (stats.reading / total * 100) + "%";
                 document.getElementById('bar-todo').style.width = (stats.todo / total * 100) + "%";
             }
-            applyFilters();
-            renderAuthorsPage();
+            applyFilters(); renderAuthorsPage();
         }
 
-        function applyFilters() {
-            const q = document.getElementById('search-input').value.toLowerCase();
-            const filtered = allBooks.filter(b => b.ad.toLowerCase().includes(q) || b.yazar.toLowerCase().includes(q));
-            renderBooks(filtered);
-        }
-
+        function applyFilters() { const q = document.getElementById('search-input').value.toLowerCase(); const filtered = allBooks.filter(b => b.ad.toLowerCase().includes(q) || b.yazar.toLowerCase().includes(q)); renderBooks(filtered); }
         function renderBooks(bks) {
-            const list = document.getElementById('book-list');
-            list.innerHTML = '';
+            const list = document.getElementById('book-list'); list.innerHTML = '';
             bks.forEach(b => {
                 const status = bookStatuses[`${b.ad}-${b.yazar}`] || "";
                 const dotColor = status === 'read' ? '#32d74b' : (status === 'reading' ? '#0a84ff' : (status === 'todo' ? '#ffd60a' : 'transparent'));
-                const div = document.createElement('div');
-                div.className = 'book-item';
-                div.onclick = () => showBookDetail(b);
-                div.innerHTML = `
-                    <div style="width:40px;height:40px;background:#2c2c2e;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">📖</div>
-                    <div class="book-info">
-                        <div class="book-title">${b.ad}</div>
-                        <div class="book-author">${b.yazar}</div>
-                    </div>
-                    <div style="width:10px;height:10px;border-radius:50%;background:${dotColor};box-shadow: 0 0 10px ${dotColor};"></div>
-                `;
+                const div = document.createElement('div'); div.className = 'book-item'; div.onclick = () => showBookDetail(b);
+                div.innerHTML = `<div style="width:40px;height:40px;background:#2c2c2e;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">📖</div><div class="book-info"><div class="book-title">${b.ad}</div><div class="book-author">${b.yazar}</div></div><div style="width:10px;height:10px;border-radius:50%;background:${dotColor};box-shadow: 0 0 10px ${dotColor};"></div>`;
                 list.appendChild(div);
             });
         }
 
         function showBookDetail(b) {
-            currentDetailBook = b;
-            const body = document.getElementById('detail-modal-body');
-            body.innerHTML = '<div style="padding:40px;text-align:center;">Bilgiler alınıyor...</div>';
-            toggleModal('detail-modal', true);
-
-            fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${b.ad}+inauthor:${b.yazar}&maxResults=1`)
-            .then(res => res.json()).then(data => {
+            currentDetailBook = b; const body = document.getElementById('detail-modal-body'); body.innerHTML = '<div style="padding:40px;text-align:center;">Bilgiler alınıyor...</div>'; toggleModal('detail-modal', true);
+            fetch(`https://www.googleapis.com/books/v1/volumes?q=intitle:${b.ad}+inauthor:${b.yazar}&maxResults=1`).then(res => res.json()).then(data => {
                 let img = '', pc = '-', yr = '-', ds = 'Detay bulunamadı.';
-                if (data.items) {
-                    const i = data.items[0].volumeInfo;
-                    img = i.imageLinks?.thumbnail.replace('http:', 'https:') || '';
-                    pc = i.pageCount || '-';
-                    yr = i.publishedDate?.substring(0,4) || '-';
-                    ds = i.description || ds;
-                }
-                body.innerHTML = `
-                    <div style="text-align:center;">
-                        ${img ? `<img src="${img}" style="width:130px; border-radius:15px; box-shadow: 0 15px 40px rgba(0,0,0,0.6);">` : '<div style="width:100px;height:150px;background:#2c2c2e;margin:0 auto;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:40px;">📚</div>'}
-                        <h2 style="margin:20px 0 5px 0; font-size:22px;">${b.ad}</h2>
-                        <p style="color:var(--text-dim); font-size:16px; margin:0;">${b.yazar}</p>
-                    </div>
-                    <div style="display:flex; justify-content:center; gap:30px; margin:25px 0;">
-                        <div style="text-align:center;"><b style="font-size:18px;">${pc}</b><br><small style="color:var(--text-dim)">SAYFA</small></div>
-                        <div style="text-align:center;"><b style="font-size:18px;">${yr}</b><br><small style="color:var(--text-dim)">BASIM</small></div>
-                    </div>
-                    <div style="background:#2c2c2e; padding:20px; border-radius:20px; font-size:15px; line-height:1.6; color:#ccc; max-height:200px; overflow-y:auto;">${ds}</div>
-                `;
+                if (data.items) { const i = data.items[0].volumeInfo; img = i.imageLinks?.thumbnail.replace('http:', 'https:') || ''; pc = i.pageCount || '-'; yr = i.publishedDate?.substring(0,4) || '-'; ds = i.description || ds; }
+                body.innerHTML = `<div style="text-align:center;">${img ? `<img src="${img}" style="width:130px; border-radius:15px; box-shadow: 0 15px 40px rgba(0,0,0,0.6);">` : '<div style="width:100px;height:150px;background:#2c2c2e;margin:0 auto;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:40px;">📚</div>'}<h2 style="margin:20px 0 5px 0; font-size:22px;">${b.ad}</h2><p style="color:var(--text-dim); font-size:16px; margin:0;">${b.yazar}</p></div><div style="display:flex; justify-content:center; gap:30px; margin:25px 0;"><div style="text-align:center;"><b style="font-size:18px;">${pc}</b><br><small style="color:var(--text-dim)">SAYFA</small></div><div style="text-align:center;"><b style="font-size:18px;">${yr}</b><br><small style="color:var(--text-dim)">BASIM</small></div></div><div style="background:#2c2c2e; padding:20px; border-radius:20px; font-size:15px; line-height:1.6; color:#ccc; max-height:200px; overflow-y:auto;">${ds}</div>`;
             });
         }
 
         function updateBookStatus(status) {
             const key = `${currentDetailBook.ad}-${currentDetailBook.yazar}`;
-            if (bookStatuses[key] === status) delete bookStatuses[key];
-            else bookStatuses[key] = status;
+            if (bookStatuses[key] === status) delete bookStatuses[key]; else bookStatuses[key] = status;
             localStorage.setItem('kutuphanem_statuses', JSON.stringify(bookStatuses));
-            showToast("Durum güncellendi ✨");
-            toggleModal('detail-modal', false);
-            refreshUI();
+            showToast("Durum güncellendi ✨"); toggleModal('detail-modal', false); refreshUI();
         }
 
-        // --- AKILLI KAYIT (Kitap İsmi Onaylı) ---
         function saveBook() {
-            const adGiris = document.getElementById('title-input').value.trim();
-            const yazarGiris = document.getElementById('author-input').value.trim();
-
-            if (!adGiris || !yazarGiris) { 
-                showToast("Lütfen tüm alanları doldurun", "error"); 
-                return; 
-            }
-
-            // 1. TAM EŞLEŞME (Aynı Kitap + Aynı Yazar)
-            const tamEslesme = allBooks.find(b => 
-                cleanText(b.ad) === cleanText(adGiris) && 
-                cleanText(b.yazar) === cleanText(yazarGiris)
-            );
-
-            if (tamEslesme) {
-                showToast(`⚠️ "${adGiris}" kitabı bu yazarla zaten kayıtlı!`, "warning");
-                return;
-            }
-
-            // 2. KİTAP ADI EŞLEŞMESİ (Farklı Yazar)
+            const adGiris = document.getElementById('title-input').value.trim(); const yazarGiris = document.getElementById('author-input').value.trim();
+            if (!adGiris || !yazarGiris) { showToast("Alanları doldurun", "error"); return; }
+            if (allBooks.find(b => cleanText(b.ad) === cleanText(adGiris) && cleanText(b.yazar) === cleanText(yazarGiris))) { showToast("Zaten kayıtlı!", "warning"); return; }
             const kitapEslesme = allBooks.find(b => cleanText(b.ad) === cleanText(adGiris));
-            if (kitapEslesme) {
-                const onay = confirm(`"${adGiris}" isimli bir kitap kütüphanenizde zaten var (Yazar: ${kitapEslesme.yazar}). \n\nYine de bu yeni yazarla kaydetmek istiyor musunuz?`);
-                if (!onay) return;
-            }
-
-            const btn = document.getElementById('save-btn');
-            btn.disabled = true; btn.innerText = "Kaydediliyor...";
-
-            fetch(API_URL, { method: 'POST', body: JSON.stringify({ ad: adGiris, yazar: yazarGiris }) })
-            .then(() => {
-                showToast("Kitap rafa eklendi 🎉");
-                document.getElementById('title-input').value = '';
-                document.getElementById('author-input').value = '';
-                document.getElementById('isbn-input').value = '';
-                fetchBooks();
-            }).catch(() => showToast("Hata oluştu", "error"))
-            .finally(() => { btn.disabled = false; btn.innerText = "RAFA EKLE"; });
+            if (kitapEslesme && !confirm(`"${adGiris}" zaten var (${kitapEslesme.yazar}). Yine de eklensin mi?`)) return;
+            const btn = document.getElementById('save-btn'); btn.disabled = true; btn.innerText = "Bekleyin...";
+            fetch(API_URL, { method: 'POST', body: JSON.stringify({ ad: adGiris, yazar: yazarGiris }) }).then(() => { showToast("Eklendi 🎉"); document.getElementById('title-input').value = ''; document.getElementById('author-input').value = ''; fetchBooks(); }).finally(() => { btn.disabled = false; btn.innerText = "RAFA EKLE"; });
         }
 
         function fetchByISBN() {
-            const i = document.getElementById('isbn-input').value;
-            if (i.length < 5) return;
-            showToast("Barkod sorgulanıyor... ⏳");
+            const i = document.getElementById('isbn-input').value; if (i.length < 5) return; showToast("Sorgulanıyor... ⏳");
             fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${i}`).then(res => res.json()).then(data => {
-                if (data.items) {
-                    const v = data.items[0].volumeInfo;
-                    document.getElementById('title-input').value = v.title;
-                    document.getElementById('author-input').value = v.authors ? v.authors[0] : "";
-                    showToast("Kitap bilgileri bulundu 🪄");
-                } else showToast("Barkod bulunamadı", "error");
+                if (data.items) { const v = data.items[0].volumeInfo; document.getElementById('title-input').value = v.title; document.getElementById('author-input').value = v.authors ? v.authors[0] : ""; showToast("Bulundu 🪄"); } else showToast("Bulunamadı", "error");
             });
         }
 
         function switchTab(t) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + t).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('tab-' + t).classList.add('active');
             ['page-library', 'page-authors', 'page-profile', 'page-login', 'page-add'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            if (t === 'add' && !isLoggedIn) document.getElementById('page-login').classList.remove('hidden');
-            else document.getElementById('page-' + t).classList.remove('hidden');
+            if (t === 'add' && !isLoggedIn) document.getElementById('page-login').classList.remove('hidden'); else document.getElementById('page-' + t).classList.remove('hidden');
         }
-
-        function checkLogin() { if(document.getElementById('pin-input').value === ADMIN_PIN) { isLoggedIn = true; switchTab('add'); showToast("Giriş yapıldı 🔐"); } else showToast("Hatalı şifre!", "error"); }
+        function checkLogin() { if(document.getElementById('pin-input').value === ADMIN_PIN) { isLoggedIn = true; switchTab('add'); showToast("Giriş başarılı 🔐"); } else showToast("Hatalı!", "error"); }
         function logout() { isLoggedIn = false; switchTab('library'); }
         function toggleModal(id, s) { document.getElementById(id).style.display = s ? 'flex' : 'none'; }
         function closeModal(e, id) { if(e.target.id === id) toggleModal(id, false); }
